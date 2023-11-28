@@ -5,9 +5,9 @@
   </head>
   <body>
     <div class="compendium-drop-target">
-    <input type="hidden" accept="Category" name="attr_drop_category"/>
-    <input type="hidden" accept="Name" name="attr_drop_name"/>
-    <input type="hidden" accept="data" name="attr_drop_data"/>
+      <input type="hidden" accept="Category" name="attr_drop_category"/>
+      <input type="hidden" accept="Name" name="attr_drop_name"/>
+      <input type="hidden" accept="data" name="attr_drop_data"/>
 
       <div class="sheets-wrapper">
         <input type="hidden" class="sheet-toggle" name="attr_sheet-type"  value="character"  />
@@ -44,7 +44,7 @@
             <div class="roles-cell">
               <h2> Roles </h2>
               <fieldset class="repeating_roles">
-                <select class="full dropdown" name="attr_role1">
+                <select class="full dropdown" name="attr_role">
                   <option></option>
                   <option value="diva">Diva</option>
                   <option value="virtuoso">Virtuoso</option>
@@ -1698,7 +1698,6 @@
                   </div>
                 </div>
                 <div class="npc-notes">
-                  <!-- mojo types -->
                   <h3>
                     Gear<br/>
                     <textarea type="text" name="attr_npcGear" class="full"></textarea>
@@ -1709,7 +1708,7 @@
                   </h3>
                   <h3>
                     Mojo<br/>
-                    <textarea type="text" name="attr_npcMojo" class="full"></textarea>
+                    <textarea type="text" name="attr_npcMojoAbilities" class="full"></textarea>
                   </h3>
                 </div>
               </div>
@@ -1923,6 +1922,12 @@
 on("change:drop_data", () => {
   getAttrs(['drop_name', 'drop_category', 'drop_data'], ({drop_name, drop_category, drop_data}) => {
     const update_attrs = {}
+    const updatedData = JSON.parse(drop_data)
+    if(drop_category === "Roles") {
+      const rowID = generateRowID()
+      const prefix = `repeating_roles_${rowID}`
+      update_attrs[`${prefix}_role`] = updatedData.Selector
+    }
     if(drop_category === "Riffs") {
       const rowID = generateRowID()
       const prefix = `repeating_riffs_${rowID}`
@@ -1932,6 +1937,27 @@ on("change:drop_data", () => {
       const rowID = generateRowID()
       const prefix = `repeating_solos_${rowID}`
       update_attrs[`${prefix}_solo`] = drop_name
+    }
+    if(drop_category === "Assets") {
+      const rowID = generateRowID()
+      const prefix = `repeating_assets_${rowID}`
+      update_attrs[`${prefix}_asset-type`] = updatedData.Selector
+    }
+    if(drop_category === "NPCs") {
+      console.log('updatedData', updatedData)
+      const rowID = generateRowID()
+      const prefix = `repeating_npcs_${rowID}`
+      update_attrs[`${prefix}_npcName`] = updatedData.Name
+      update_attrs[`${prefix}_npcMusic`] = updatedData.music
+      update_attrs[`${prefix}_npcViolence`] = updatedData.violence
+      update_attrs[`${prefix}_npcMinds`] = updatedData.minds
+      update_attrs[`${prefix}_npcTech`] = updatedData.tech
+      update_attrs[`${prefix}_npcAuthority`] = updatedData.authority
+      update_attrs[`${prefix}_npcThreat`] = updatedData.threat
+      update_attrs[`${prefix}_npcLeadership`] = updatedData.leadership
+      update_attrs[`${prefix}_npcGear`] = updatedData.gear
+      update_attrs[`${prefix}_npcAbilities`] = updatedData.abilities
+      update_attrs[`${prefix}_npcNMojo`] = updatedData.mojo
     }
     setAttrs(update_attrs)
   })
