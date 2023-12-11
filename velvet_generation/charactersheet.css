@@ -436,7 +436,8 @@ textarea.full {
     grid-template-rows: auto repeat(5, 2em);
     align-items: center;
     text-align: center;
-    background-image: url('https://raw.githubusercontent.com/richranallo/roll20-character-sheets/866acfa3c01d1b1b0cdfe5258913e3f181357e6e/velvet_generation/action-grid-bgnd.svg');
+    background-size: 100% 100%;
+    background-image: url('https://raw.githubusercontent.com/richranallo/roll20-character-sheets/531112c812d10d17a54e2526c159af1ccbe17441/velvet_generation/action-grid-bgnd.svg');
   }
   .table-topline {
     text-align: right;
